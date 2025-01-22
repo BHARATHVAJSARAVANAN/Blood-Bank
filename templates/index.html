@@ -1,0 +1,301 @@
+{% extends "base.html" %} {% block content %}
+
+<div
+id="carouselExampleControls"
+class="carousel slide"
+data-bs-ride="carousel"
+>
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <img
+      class="d-block w-100"
+      height="500px"
+      src="https://www.crescentbloodbank.com/view/gallery/image/crescent-blood-bank-gallery.png"
+      alt="First slide"
+    />
+  </div>
+  <div class="carousel-item">
+    <img
+      class="d-block w-100"
+      height="500px"
+      src="https://www.pushpanjalihospitals.com/wp-content/uploads/2022/05/blood-bank.jpg.webp"
+      alt="Second slide"
+    />
+  </div>
+  <div class="carousel-item">
+    <img
+      class="d-block w-100"
+      src="https://img.freepik.com/free-vector/blood-donation-symbol-with-hand-blood-bag_1308-111238.jpg"
+      height="500px"
+      alt="Third slide"
+    />
+  </div>
+  <div class="carousel-item">
+    <img
+      class="d-block w-100"
+      height="500px"
+      src="https://www.geetanjalihospital.co.in/images/blood-bank.jpg"
+      alt="fourth slide"
+    />
+  </div>
+</div>
+
+<button
+  class="carousel-control-prev"
+  type="button"
+  data-bs-target="#carouselExampleControls"
+  data-bs-slide="prev"
+>
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Previous</span>
+</button>
+<button
+  class="carousel-control-next"
+  type="button"
+  data-bs-target="#carouselExampleControls"
+  data-bs-slide="next"
+>
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Next</span>
+</button>
+
+</div>
+
+    <!-- About Us  -->
+    <div id="about" class="container col-xl-10 col-xxl-8 px-2 py-2">
+      <div class="row align-items-center g-lg-5 py-5">
+        <div class="col-lg-7 text-center text-lg-start">
+          <h1 class="display-4 fw-bold lh-1 mb-3 text-center">About Us</h1>
+          <p class="col-lg-10 fs-5">
+            Established with a vision to make the process of blood donation and distribution seamless and efficient, leverages technology to streamline the entire blood management process. From donor registration to inventory management and blood distribution, our innovative platform ensures that the right blood reaches the right person at the right time.
+          </p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+          <img
+            class="rounded"
+            src="https://cdn-icons-png.flaticon.com/512/1297/1297136.png"
+            width="300px"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+
+<div class="container-fluid">
+  <center>
+    <div class="card text-left mt-3" style="width: 35rem">
+      <div class="card-body">
+        <form class="form-group" action="{{url_for('index')}}" method="POST">
+          <label for="sel"> Search by:</label>
+          <select
+            name="type"
+            class="form-control"
+            id="exampleFormControlSelect1"
+            required
+          >
+            <option value="blood">Blood group</option>
+            <option value="donorname">Donorname</option></select
+          ><br />
+          
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            name="search"
+            placeholder="Search"
+            aria-label="Search"
+            required
+          /><br />
+          <center>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </center>
+        </form>
+      </div>
+    </div>
+  </center>
+</div>
+<div class="container-fluid mb-2 mt-2">
+  {% if search!=NULL %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">
+        Search results:
+      </li>
+    </ol>
+  </nav>
+
+  <center>
+    {% for s in search %}
+    <div class="card text-left" style="width: 70rem">
+      <div class="card-header">{{s["name"]}}</div>
+      <div class="card-body ml-3">
+        <h5 class="card-title ml-3">{{s['email']}}</h5>
+        <h6 class="card-subtitle mb-2 ml-3 text-muted">
+          Blood Group: {{s['bg']}}
+        </h6>
+        <p class="card-text ml-3">
+          Address: {{s["addr"]}} {{ s["city"]}} {{s['pin']}}
+          <br />
+
+          {% if session['username'] == s['email']%}
+
+          <span
+            class="d-inline-block"
+            data-toggle="popover"
+            data-content="Disabled popover"
+          >
+            <button
+              class="btn btn-primary mt-2 content-justify-end"
+              style="pointer-events: none"
+              type="button"
+              disabled
+            >
+              contact for blood
+            </button>
+          </span>
+
+          {% elif session['logged_in'] == True %}
+
+          <button
+            type="button"
+            class="btn btn-primary mt-1 content-justify-end"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+          >
+            contact for blood
+          </button>
+        </p>
+
+        {% endif %}
+      </div>
+      <br />
+      {% endfor %} {% endif %}
+    </div>
+  </center>
+</div>
+<div class="container-fluid">
+  <!-- Content here -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">
+        Registered donores:
+      </li>
+    </ol>
+  </nav>
+
+  <center>
+    {% for row in rows %}
+    <div class="card text-left" style="width: 70rem">
+      <div class="card-header">{{row["name"]}}</div>
+      <div class="card-body ml-3">
+        <h5 class="card-title ml-3">{{row['email']}}</h5>
+        <h6 class="card-subtitle mb-2 ml-3 text-muted">
+          Blood Group: {{row['bg']}}
+        </h6>
+        <p class="card-text ml-3">
+          Address: {{row["addr"]}} {{ row["city"]}} {{row['pin']}}
+          <br />
+          {% if session['username'] == row['email']%}
+
+          <span
+            class="d-inline-block"
+            data-toggle="popover"
+            data-content="Disabled popover"
+          >
+            <button
+              class="btn btn-primary mt-2"
+              style="pointer-events: none"
+              type="button"
+              disabled
+            >
+              contact for blood
+            </button>
+          </span>
+
+          {% elif session['logged_in'] == True %}
+          <button
+            type="button"
+            class="btn btn-primary mt-1"
+            onclick="send_notification_clicked('{{row['email']}}');"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+            
+          >
+            contact for blood
+          </button>
+        </p>
+
+        <div
+          class="modal fade"
+          id="exampleModalCenter"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">
+                  contact for blood
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form
+                  id="contactform"
+                  method="POST"
+                  action=""
+                >
+                  <label for="name">Name</label>
+                  <input type="text" name="nm" class="form-control" required />
+                  <label for="addr"> confirm your Address</label>
+                  <textarea name="add" class="form-control" required></textarea>
+
+                  <button
+                    class="btn btn-outline-success my-2 my-sm-0"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary mt-1"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endif %}
+      </div>
+    </div>
+    <br />
+    {% endfor %}
+  </center>
+</div>
+
+{% with messages = get_flashed_messages() %} {%if messages%} {%for mess in
+messages%}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{mess}}
+</div>
+
+{%endfor%} {%endif%} {% endwith %} {% endblock %}
+
+
